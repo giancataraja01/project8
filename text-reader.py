@@ -1,8 +1,8 @@
 import time
 
-def tail_file(file_path):
+def read_file_in_real_time(file_path):
     """
-    Continuously monitors a file for new content and prints it in real-time.
+    Continuously reads a file and displays new content in real-time.
     """
     try:
         with open(file_path, "r") as file:
@@ -14,7 +14,7 @@ def tail_file(file_path):
                 # Read new lines if available
                 line = file.readline()
                 if line:
-                    print(line.strip())  # Print new content
+                    print(line.strip())  # Print new content without extra whitespace
                 else:
                     time.sleep(0.5)  # Wait briefly before checking again
     except FileNotFoundError:
@@ -24,4 +24,4 @@ def tail_file(file_path):
 
 # Path to the file to monitor
 file_path = "detection_logs.txt"
-tail_file(file_path)
+read_file_in_real_time(file_path)
