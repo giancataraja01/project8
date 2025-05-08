@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, db
 
-SERVICE_ACCOUNT_PATH = 'project8-b295f-19709ee58270.json'
+SERVICE_ACCOUNT_PATH = 'replace_this.json'
 DATABASE_URL = 'https://project8-b295f-default-rtdb.asia-southeast1.firebasedatabase.app'
 
 try:
