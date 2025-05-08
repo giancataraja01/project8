@@ -1,4 +1,5 @@
 import time
+import os  # Needed for os.SEEK_END
 
 def read_file_in_real_time(file_path):
     """
@@ -7,8 +8,8 @@ def read_file_in_real_time(file_path):
     try:
         with open(file_path, "r") as file:
             # Move to the end of the file
-            file.seek(0, 2)
-            print(f"Monitoring '{file_path}' for updates...")
+            file.seek(0, os.SEEK_END)
+            print("Monitoring '{}' for updates...".format(file_path))
             
             while True:
                 # Read new lines if available
@@ -18,7 +19,7 @@ def read_file_in_real_time(file_path):
                 else:
                     time.sleep(0.5)  # Wait briefly before checking again
     except FileNotFoundError:
-        print(f"Error: The file '{file_path}' does not exist.")
+        print("Error: The file '{}' does not exist.".format(file_path))
     except KeyboardInterrupt:
         print("\nStopped monitoring the file.")
 
