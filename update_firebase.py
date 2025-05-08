@@ -2,10 +2,10 @@ import firebase_admin
 from firebase_admin import credentials, db
 
 # Path to your Firebase Admin SDK service account key
-SERVICE_ACCOUNT_PATH = 'path/to/your/serviceAccountKey.json'
+SERVICE_ACCOUNT_PATH = 'project8-b295f-19709ee58270.json'
 
 # Your Firebase Realtime Database URL
-DATABASE_URL = 'https://your-project-id.firebaseio.com/'
+DATABASE_URL = 'https://project8-b295f-default-rtdb.asia-southeast1.firebasedatabase.app'
 
 # Initialize Firebase app
 cred = credentials.Certificate(SERVICE_ACCOUNT_PATH)
