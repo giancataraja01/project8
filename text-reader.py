@@ -1,28 +1,22 @@
 import time
-import os  # Needed for os.SEEK_END
+import os
 
 def read_file_in_real_time(file_path):
-    """
-    Continuously reads a file and displays new content in real-time.
-    """
     try:
         with open(file_path, "r") as file:
-            # Move to the end of the file
             file.seek(0, os.SEEK_END)
             print("Monitoring '{}' for updates...".format(file_path))
-            
+
             while True:
-                # Read new lines if available
                 line = file.readline()
                 if line:
-                    print(line.strip())  # Print new content without extra whitespace
+                    print("New line:", line.strip())
                 else:
-                    time.sleep(0.5)  # Wait briefly before checking again
+                    time.sleep(0.5)
     except FileNotFoundError:
         print("Error: The file '{}' does not exist.".format(file_path))
     except KeyboardInterrupt:
         print("\nStopped monitoring the file.")
 
-# Path to the file to monitor
 file_path = "detection_logs.txt"
 read_file_in_real_time(file_path)
