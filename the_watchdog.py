@@ -21,7 +21,7 @@ class FileChangeHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    file_to_watch = "detection-logs.txt"  # Change this to the file you want to monitor
+    file_to_watch = "detection_logs.txt"  # Change this to the file you want to monitor
 
     event_handler = FileChangeHandler(file_to_watch)
     observer = Observer()
