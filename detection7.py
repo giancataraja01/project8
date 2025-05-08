@@ -18,13 +18,23 @@ while display.IsOpen():
 
     # Render the filtered detections
     for detection in dog_detections:
-        jetson.utils.cudaDrawRect(img, detection.ROI, (255, 0, 0, 255))  # Draw bounding box in red
-        jetson.utils.cudaDrawText(
+        # Draw the bounding box for the dog
+        jetson.utils.cudaDrawRect(
+            img, 
+            (int(detection.Left), int(detection.Top), int(detection.Right), int(detection.Bottom)),
+            (255, 0, 0, 255)  # Red color with full opacity
+        )
+        
+        # Draw the label above the bounding box
+        jetson.utils.cudaOverlayText(
             img,
             f"Dog: {detection.Confidence * 100:.1f}%",
-            (int(detection.Left), int(detection.Top) - 10),
-            (255, 0, 0, 255),
+            (int(detection.Left), int(detection.Top - 20)),  # Position text above the box
+            (255, 255, 255, 255),  # White text
+            (0, 0, 0, 255),        # Black background
+            14                     # Font size
         )
 
+    # Render the display
     display.RenderOnce(img, width, height)
     display.SetTitle("Dog Detection | Network {:.0f} FPS".format(net.GetNetworkFPS()))
