@@ -1,37 +1,36 @@
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 import time
-import os
 
-def follow(file_path, sleep_sec=1.0):
-    """Display the content of the file and continue printing new entries."""
+class LogFileHandler(FileSystemEventHandler):
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.last_position = 0
+
+    def on_modified(self, event):
+        if event.src_path.endswith(self.file_path):
+            with open(self.file_path, 'r') as file:
+                file.seek(self.last_position)
+                new_content = file.read()
+                if new_content:
+                    print(new_content, end='')  # print new lines without extra newline
+                self.last_position = file.tell()
+
+def monitor_log_file(file_path):
+    print(f"Monitoring '{file_path}' for real-time updates... (Press Ctrl+C to stop)")
+    event_handler = LogFileHandler(file_path)
+    observer = Observer()
+    observer.schedule(event_handler, path='.', recursive=False)
+    observer.start()
+
     try:
-        with open(file_path, 'r') as file:
-            # Read and display existing content of the file
-            print("[CONTENT OF FILE]")
-            file.seek(0)  # Go to the beginning of the file
-            content = file.read()
-            if content:
-                print(content)  # Print existing content
-            else:
-                print("[INFO] The file is currently empty.")
-                
-            print("\n[START MONITORING NEW ENTRIES]")
-            file.seek(0, os.SEEK_END)  # Move the pointer to the end for new entries
-            
-            while True:
-                line = file.readline()
-                if line:
-                    print(line.rstrip())  # Display new line
-                else:
-                    time.sleep(sleep_sec)  # Wait for new content
-    except FileNotFoundError:
-        print(f"[ERROR] File '{file_path}' not found.")
+        while True:
+            time.sleep(1)
     except KeyboardInterrupt:
-        print("\n[INFO] Monitoring stopped by user.")
-
-def main():
-    log_file = "detection_logs.txt"
-    print(f"Monitoring '{log_file}'... (Press Ctrl+C to stop)")
-    follow(log_file)
+        observer.stop()
+        print("\nStopped monitoring.")
+    observer.join()
 
 if __name__ == "__main__":
-    main()
+    log_file = "detection_logs.txt"
+    monitor_log_file(log_file)
