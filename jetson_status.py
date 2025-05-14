@@ -59,4 +59,9 @@ def upload_status_to_firebase():
 
 # ---------- RUN ----------
 if __name__ == '__main__':
-    upload_status_to_firebase()
+    try:
+        while True:
+            upload_status_to_firebase()
+            time.sleep(5)
+    except KeyboardInterrupt:
+        print("Stopped by user.")
