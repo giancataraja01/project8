@@ -4,12 +4,12 @@ import time
 # File to monitor
 FILE_PATH = 'detection_logs.txt'
 
-# GPIO pin setup (BCM numbering)
-TRIG = 35  # Adjust as per your wiring
-ECHO = 33  # Adjust as per your wiring
+# GPIO pin setup (BOARD numbering assumed due to pin numbers 35 & 33)
+TRIG = 35  # Physical pin 35
+ECHO = 33  # Physical pin 33
 
 # GPIO setup
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)  # Use GPIO.BCM if using BCM numbering instead
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
@@ -31,19 +31,25 @@ def measure_distance():
     time.sleep(0.00001)
     GPIO.output(TRIG, False)
 
-    # Wait for echo start
+    # Wait for echo start with timeout
+    timeout_start = time.time()
     while GPIO.input(ECHO) == 0:
         pulse_start = time.time()
+        if time.time() - timeout_start > 1:
+            print("Timeout: ECHO signal did not go high")
+            return None
 
-    # Wait for echo end
+    # Wait for echo end with timeout
+    timeout_end = time.time()
     while GPIO.input(ECHO) == 1:
         pulse_end = time.time()
+        if time.time() - timeout_end > 1:
+            print("Timeout: ECHO signal did not go low")
+            return None
 
-    # Calculate duration
+    # Calculate pulse duration and distance
     pulse_duration = pulse_end - pulse_start
-
-    # Calculate distance (in cm)
-    distance = pulse_duration * 17150
+    distance = pulse_duration * 17150  # cm
     distance = round(distance, 2)
     return distance
 
@@ -51,7 +57,8 @@ try:
     while True:
         if read_trigger_file():
             dist = measure_distance()
-            print(f"Distance: {dist} cm")
+            if dist is not None:
+                print(f"Distance: {dist} cm")
         time.sleep(1)
 
 except KeyboardInterrupt:
