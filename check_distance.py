@@ -4,12 +4,12 @@ import time
 # File to monitor
 FILE_PATH = 'detection_logs.txt'
 
-# GPIO pin setup (BOARD numbering assumed due to pin numbers 35 & 33)
+# GPIO pin setup (BOARD numbering)
 TRIG = 35  # Physical pin 35
 ECHO = 33  # Physical pin 33
 
 # GPIO setup
-GPIO.setmode(GPIO.BOARD)  # Use GPIO.BCM if using BCM numbering instead
+GPIO.setmode(GPIO.BOARD)  # Use BOARD since pin numbers are physical
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
@@ -31,27 +31,26 @@ def measure_distance():
     time.sleep(0.00001)
     GPIO.output(TRIG, False)
 
-    # Wait for echo start with timeout
-    timeout_start = time.time()
+    # Wait for echo to go high
+    timeout_start = time.time() + 1
     while GPIO.input(ECHO) == 0:
-        pulse_start = time.time()
-        if time.time() - timeout_start > 1:
+        if time.time() > timeout_start:
             print("Timeout: ECHO signal did not go high")
             return None
+    pulse_start = time.time()
 
-    # Wait for echo end with timeout
-    timeout_end = time.time()
+    # Wait for echo to go low
+    timeout_end = time.time() + 1
     while GPIO.input(ECHO) == 1:
-        pulse_end = time.time()
-        if time.time() - timeout_end > 1:
+        if time.time() > timeout_end:
             print("Timeout: ECHO signal did not go low")
             return None
+    pulse_end = time.time()
 
     # Calculate pulse duration and distance
     pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150  # cm
-    distance = round(distance, 2)
-    return distance
+    distance = pulse_duration * 17150  # Speed of sound: 34300 cm/s ÷ 2
+    return round(distance, 2)
 
 try:
     while True:
