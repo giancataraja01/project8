@@ -5,8 +5,8 @@ import time
 FILE_PATH = 'detection_logs.txt'
 
 # GPIO pin setup (BCM numbering)
-TRIG = 23  # Adjust as per your wiring
-ECHO = 24  # Adjust as per your wiring
+TRIG = 35  # Adjust as per your wiring
+ECHO = 33  # Adjust as per your wiring
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
