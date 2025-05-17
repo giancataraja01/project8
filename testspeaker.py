@@ -1,34 +1,52 @@
 import Jetson.GPIO as GPIO
 import time
 
-# Constants
-PIN = 18                # GPIO pin (BCM numbering)
-START_FREQ = 20000      # Start frequency in Hz
-END_FREQ = 40000        # End frequency in Hz
-STEP = 1000             # Frequency increment in Hz
-TONE_DURATION = 2       # Duration of each tone in seconds
+# GPIO and frequency setup
+TWEETER_PIN = 7          # Pin 7 (BOARD numbering)
+ULTRASONIC_FREQ = 25000  # 25 kHz
+DUTY_CYCLE = 50          # 50% for square wave
 
-# Setup GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(PIN, GPIO.OUT)
+# File to monitor
+STATUS_FILE = "detection_logs.txt"
 
-# Setup PWM
-pwm = GPIO.PWM(PIN, START_FREQ)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(TWEETER_PIN, GPIO.OUT)
 
-print("Starting ultrasonic frequency sweep...")
+# Initialize PWM
+pwm = GPIO.PWM(TWEETER_PIN, ULTRASONIC_FREQ)
+tweeter_is_on = False
+
+# Function to read detection status
+def read_status(filename=STATUS_FILE):
+    try:
+        with open(filename, "r") as file:
+            content = file.read().strip().lower()
+            return content == "true"
+    except FileNotFoundError:
+        print(f"File '{filename}' not found.")
+        return False
+
+print("Monitoring detection_logs.txt... Press Ctrl+C to stop.")
+
 try:
-    for freq in range(START_FREQ, END_FREQ + 1, STEP):
-        print(f"Playing {freq} Hz")
-        pwm.ChangeFrequency(freq)
-        pwm.start(50)  # 50% duty cycle
-        time.sleep(TONE_DURATION)
-        pwm.stop()
-        time.sleep(0.5)  # short pause between tones
+    while True:
+        status = read_status()
+
+        if status and not tweeter_is_on:
+            pwm.start(DUTY_CYCLE)
+            tweeter_is_on = True
+            print("Tweeter ON (25 kHz tone)")
+        elif not status and tweeter_is_on:
+            pwm.stop()
+            tweeter_is_on = False
+            print("Tweeter OFF")
+
+        time.sleep(1)  # Check every second
 
 except KeyboardInterrupt:
-    print("Sweep interrupted by user.")
+    print("Stopping...")
 
 finally:
     pwm.stop()
     GPIO.cleanup()
-    print("GPIO cleaned up. Done.")
+    print("GPIO cleaned up. Tweeter OFF.")
