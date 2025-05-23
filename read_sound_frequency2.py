@@ -11,9 +11,9 @@ FS = 96000    # Sampling rate (high enough for ultrasonic >20kHz)
 FILENAME = "ultrasonic_recording.wav"
 
 # Initialize Firebase Admin
-cred = credentials.Certificate('path/to/serviceAccountKey.json')  # <-- Update path here
+cred = credentials.Certificate('path/to/serviceAccountKey.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': '<your-project-id>.appspot.com'  # <-- Update bucket name here
+    'storageBucket': '<your-project-id>.appspot.com'
 })
 
 def record_audio(filename, duration, fs):
