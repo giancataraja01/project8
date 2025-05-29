@@ -1,2 +1,3 @@
-wget https://nvidia.box.com/shared/static/2sj5cvjjtvzl0pfepexx2b4qk5f2ff5c.whl -O torch-1.10.0-cp38-cp38-linux_aarch64.whl
-pip install torch-1.10.0-cp38-cp38-linux_aarch64.whl
+# Download the Jetson-optimized PyTorch (check latest versions at: https://forums.developer.nvidia.com/c/jetson/jetson-downloads/124)
+wget https://nvidia.box.com/shared/static/1ys4ttmcplphch5cwroqbsh4vdkvl6tq.whl -O torch-1.13.0-cp38-cp38-linux_aarch64.whl
+pip install torch-1.13.0-cp38-cp38-linux_aarch64.whl
