@@ -4,3 +4,8 @@ sudo apt install git python3-pip libopenblas-dev liblapack-dev libjpeg-dev libpn
 # Example: For JetPack 4.6 and Python 3.6
 wget https://nvidia.box.com/shared/static/p57jwntg31wlyit7g01lft7d71z6t0yw.whl -O torch-1.10.0-cp36-cp36m-linux_aarch64.whl
 sudo pip3 install torch-1.10.0-cp36-cp36m-linux_aarch64.whl
+
+
+wget https://nvidia.box.com/shared/static/fjtbno0vpo676a25cgvuqc1wty0fkkg6.whl -O torch-1.10.0-cp36-cp36m-linux_aarch64.whl
+sudo pip3 install torch-1.10.0-cp36-cp36m-linux_aarch64.whl
+
