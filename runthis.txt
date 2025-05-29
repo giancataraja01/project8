@@ -1,3 +1,1 @@
-# Download the Jetson-optimized PyTorch (check latest versions at: https://forums.developer.nvidia.com/c/jetson/jetson-downloads/124)
-wget https://nvidia.box.com/shared/static/1ys4ttmcplphch5cwroqbsh4vdkvl6tq.whl -O torch-1.13.0-cp38-cp38-linux_aarch64.whl
-pip install torch-1.13.0-cp38-cp38-linux_aarch64.whl
+sudo apt install git python3-pip libopenblas-dev liblapack-dev libjpeg-dev libpng-dev libtiff-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libcanberra-gtk* libatlas-base-dev gfortran ffmpeg -y
