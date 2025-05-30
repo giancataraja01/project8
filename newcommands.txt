@@ -13,3 +13,7 @@ pip3 install ultralytics==8.0.20
 
 You should now be ready to run YOLOv8:
 yolo task=detect mode=predict model=yolov8n.pt source=your_image.jpg
+
+
+wget https://nvidia.box.com/shared/static/3jl3vhxw7cxrcl3xgzyghmpyo33zvfz6.whl -O torch-1.10.0-cp38-cp38-linux_aarch64.whl
+
