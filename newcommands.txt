@@ -1,0 +1,15 @@
+sudo apt-get update
+sudo apt-get install -y python3-pip libopenblas-base libopenmpi-dev libomp-dev
+pip3 install --upgrade pip
+
+wget https://nvidia.box.com/shared/static/3jl3vhxw7cxrcl3xgzyghmpyo33zvfz6.whl -O torch-1.10.0-cp38-cp38-linux_aarch64.whl
+pip3 install torch-1.10.0-cp38-cp38-linux_aarch64.whl
+
+python3 -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+
+Install Ultralytics (YOLOv8)
+With Python 3.8, you can now install a compatible version of Ultralytics:
+pip3 install ultralytics==8.0.20
+
+You should now be ready to run YOLOv8:
+yolo task=detect mode=predict model=yolov8n.pt source=your_image.jpg
